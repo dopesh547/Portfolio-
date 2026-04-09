@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fred Automatise — Automatisation & IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f2ed;
+  --ink: #0e0c0a;
+  --ink2: #3a3530;
+  --ink3: #8a8078;
+  --cream: #ede9e2;
+  --cream2: #e4dfd6;
+  --orange: #c94b1a;
+  --orange-light: #f0784a;
+  --green: #1a5c3a;
+  --green-light: #2d8a58;
+  --border: rgba(14,12,10,0.1);
+  --border-strong: rgba(14,12,10,0.2);
+  --card-bg: #ffffff;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Cabinet Grotesk', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* GRAIN OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.4;
+}
+
+/* NAV */
+nav {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border-strong);
+  position: sticky;
+  top: 0;
+  background: rgba(245,242,237,0.92);
+  backdrop-filter: blur(12px);
+  z-index: 50;
+}
+
+.nav-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.logo span {
+  color: var(--orange);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nav-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.nav-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green-light);
+  animation: blink 2s ease infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* HERO */
+.hero {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 80px 32px 64px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 48px;
+  align-items: end;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-left { }
+
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--orange);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--orange);
+}
+
+.hero h1 {
+  font-family: 'Clash Display', sans-serif;
+  font-size: clamp(44px, 6vw, 76px);
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+
+.hero h1 .line2 {
+  color: var(--orange);
+  font-style: italic;
+}
+
+.hero-desc {
+  font-size: 17px;
+  color: var(--ink2);
+  line-height: 1.65;
+  max-width: 480px;
+  font-weight: 400;
+}
+
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-end;
+  padding-bottom: 4px;
+}
+
+.stat-block {
+  text-align: right;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+  width: 140px;
+}
+
+.stat-block:last-child {
+  border-bottom: none;
+}
+
+.stat-num {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  display: block;
+}
+
+.stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 4px;
+  display: block;
+}
+
+/* MAIN CONTENT */
+.main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* SECTION HEADER */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 48px 0 32px;
+  border-bottom: 1px solid var(--border-strong);
+  margin-bottom: 32px;
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.section-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.section-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink3);
+}
+
+/* PROJECTS GRID */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border-strong);
+  border: 1px solid var(--border-strong);
+  margin-bottom: 1px;
+}
+
+.card {
+  background: var(--card-bg);
+  padding: 28px 24px;
+  transition: background 0.2s;
+  cursor: default;
+  position: relative;
+}
+
+.card:hover {
+  background: var(--cream);
+}
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.card-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.card-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  letter-spacing: 0.06em;
+}
+
+.card-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.card-problem {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.6;
+  margin-bottom: 16px;
+  font-weight: 400;
+}
+
+.card-result {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  background: rgba(26,92,58,0.06);
+  border-left: 2px solid var(--green-light);
+  padding: 8px 10px;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  background: var(--cream2);
+  border: 1px solid var(--border-strong);
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.03em;
+}
+
+/* STACK SECTION */
+.stack-section {
+  border-top: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border-strong);
+  padding: 48px 0;
+  background: var(--cream);
+  margin: 48px 0;
+}
+
+.stack-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.stack-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.stack-item {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink2);
+  background: var(--card-bg);
+  border: 1px solid var(--border-strong);
+  padding: 8px 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.stack-item:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+/* CTA */
+.cta-section {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px 80px;
+}
+
+.cta-inner {
+  background: var(--ink);
+  border-radius: 16px;
+  padding: 56px 48px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-inner::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,75,26,0.3) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cta-inner::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  left: 30%;
+  width: 300px;
+  height: 150px;
+  background: radial-gradient(ellipse, rgba(26,92,58,0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cta-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--orange-light);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.cta-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+
+.cta-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--orange);
+  color: #ffffff;
+  text-decoration: none;
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 14px 24px;
+  border-radius: 8px;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.2s;
+  letter-spacing: 0.01em;
+}
+
+.btn-primary:hover {
+  background: var(--orange-light);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 14px 24px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  white-space: nowrap;
+  transition: border-color 0.2s, color 0.2s, transform 0.2s;
+}
+
+.btn-secondary:hover {
+  border-color: rgba(255,255,255,0.4);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border-strong);
+  padding: 20px 32px;
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+footer p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  letter-spacing: 0.06em;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero { animation: fadeUp 0.5s ease both; }
+.projects-grid { animation: fadeUp 0.5s 0.1s ease both; }
+
+@media (max-width: 900px) {
+  .projects-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero { grid-template-columns: 1fr; gap: 32px; }
+  .hero-right { flex-direction: row; align-items: flex-start; width: 100%; justify-content: flex-start; }
+  .stat-block { text-align: left; border-bottom: none; border-right: 1px solid var(--border); padding: 0 24px 0 0; width: auto; }
+  .stat-block:last-child { border-right: none; }
+  .cta-inner { grid-template-columns: 1fr; }
+  .cta-buttons { flex-direction: row; }
+}
+
+@media (max-width: 640px) {
+  .projects-grid { grid-template-columns: 1fr; }
+  .nav-right .nav-tag { display: none; }
+  .hero { padding: 48px 20px 40px; }
+  .main { padding: 0 20px; }
+  .cta-section { padding: 0 20px 48px; }
+  .cta-inner { padding: 32px 24px; }
+  .cta-buttons { flex-direction: column; }
+  footer { padding: 16px 20px; flex-direction: column; gap: 8px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">Fred <span>Automatise</span></div>
+    <div class="nav-right">
+      <div class="nav-tag">Remote · FR / EN</div>
+      <div class="nav-status">Disponible</div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Automatisation & IA · n8n · Make.com</div>
+    <h1>Workflows<br><span class="line2">qui livrent.</span><br>Vraiment.</h1>
+    <p class="hero-desc">Je construis des systèmes d'automatisation documentés, testés, et livrés en 5 à 7 jours. Vous gérez vos clients — je fais tourner les process.</p>
+  </div>
+  <div class="hero-right">
+    <div class="stat-block">
+      <span class="stat-num">9+</span>
+      <span class="stat-label">Projets livrés</span>
+    </div>
+    <div class="stat-block">
+      <span class="stat-num">5–7j</span>
+      <span class="stat-label">Délai garanti</span>
+    </div>
+    <div class="stat-block">
+      <span class="stat-num">100%</span>
+      <span class="stat-label">Remote</span>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<div class="main">
+  <div class="section-head">
+    <div>
+      <div class="section-label">Projets livrés</div>
+      <div class="section-title">Ce qui tourne en production</div>
+    </div>
+    <div class="section-count">09 cas</div>
+  </div>
+
+  <div class="projects-grid">
+
+    <div class="card">
+      <div class="card-top">
+        <span class="card-icon">🧾</span>
+        <span class="card-num">01</span>
+      </div>
+      <div class="card-title">Bot de génération de devis</div>
+      <div class="card-problem">Un client envoie ses besoins via Telegram. Le bot génère un devis PDF complet en moins d'une minute, sans intervention humaine.</div>
+      <div class="card-result">Devis PDF envoyé en &lt; 60 sec — zéro saisie manuelle</div>
+      <div class="stack">
+        <span class="tag">n8n</span><span class="tag">Groq AI</span><span class="tag">Telegram</span><span class="tag">Google Sheets</span><span class="tag">PDF</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <span class="card-icon">🍽️</span>
+        <span class="card-num">02</span>
+      </div>
+      <div class="card-title">Agent de commandes restaurant</div>
+      <div class="card-problem">Les clients passent commande par message texte ou vocal. L'agent lit le menu depuis Notion, traite la commande et notifie la cuisine.</div>
+      <div class="card-result">Commandes texte & audio 24h/24 — menu dynamique Notion</div>
+      <div class="stack">
+        <span class="tag">n8n</span><span class="tag">Groq AI</span><span class="tag">Telegram</span><span class="tag">Notion</span><span class="tag">Whisper</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <span class="card-icon">🔍</span>
+        <span class="card-num">03</span>
+      </div>
+      <div class="card-title">Audit client automatisé</div>
+      <div class="card-problem">Un prospect remplit un formulaire. L'agent analyse ses réponses, génère un audit personnalisé et envoie un email de résultats en 2 minutes.</div>
+      <div class="card-result">Audit + email personnalisé en &lt; 2 min après soumission</div>
+      <div class="stack">
+        <span class="tag">n8n</span><span class="tag">Gemini</span><span class="tag">Webhook</span><span class="tag">Gmail</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <span class="card-icon">✍️</span>
+        <span class="card-num">04</span>
+      </div>
+      <div class="card-title">Agent copywriting IA</div>
+      <div class="card-problem">L'agent reçoit un brief via Telegram, génère du contenu marketing adapté avec mémoire conversationnelle — ton et style de marque persistants.</div>
+      <div class="card-result">Contenu prêt en 30 sec — mémoire de session persistante</div>
+      <div class="stack">
+        <span class="tag">n8n</span><span class="tag">Groq AI</span><span class="tag">Telegram</span><span class="tag">PostgreSQL</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <span class="card-icon">🩺</span>
+        <span class="card-num">05</span>
+      </div>
+      <div class="card-title">Bot révision sciences infirmières</div>
+      <div class="card-problem">Les étudiants demandent des QCM par Telegram. L'agent extrait les cours depuis Dropbox et génère des questions ciblées sur le chapitre demandé.</div>
+      <div class="card-result">QCM générés à la demande depuis les vrais fichiers de cours</div>
+      <div class="stack">
+        <span class="tag">n8n</span><span class="tag">Gemini</span><span class="tag">Telegram</span><span class="tag">Dropbox</span><span class="tag">PostgreSQL</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <span class="card-icon">🔔</span>
+        <span class="card-num">06</span>
+      </div>
+      <div class="card-title">Workflow relance client</div>
+      <div class="card-problem">Les relances manuelles sont oubliées. Ce workflow déclenche automatiquement des séquences de relance selon l'état du client dans le CRM.</div>
+      <div class="card-result">0 relance oubliée — séquence automatique multi-étapes</div>
+      <div class="stack">
+        <span class="tag">Make.com</span><span class="tag">CRM</span><span class="tag">Email</span><span class="tag">WhatsApp</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <span class="card-icon">📩</span>
+        <span class="card-num">07</span>
+      </div>
+      <div class="card-title">Onboarding client automatisé</div>
+      <div class="card-problem">Chaque nouveau client déclenche un email de bienvenue personnalisé avec ses informations, sans aucune action manuelle.</div>
+      <div class="card-result">Onboarding cohérent à chaque client — 0 oubli possible</div>
+      <div class="stack">
+        <span class="tag">Make.com</span><span class="tag">Gmail</span><span class="tag">CRM</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <span class="card-icon">🧲</span>
+        <span class="card-num">08</span>
+      </div>
+      <div class="card-title">Lead magnet contre contact</div>
+      <div class="card-problem">Un visiteur demande une ressource gratuite. Le workflow capture son contact, envoie la ressource et l'ajoute au CRM automatiquement.</div>
+      <div class="card-result">Lead qualifié capturé + ressource envoyée en temps réel</div>
+      <div class="stack">
+        <span class="tag">Make.com</span><span class="tag">Tally</span><span class="tag">Gmail</span><span class="tag">Google Sheets</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <span class="card-icon">📊</span>
+        <span class="card-num">09</span>
+      </div>
+      <div class="card-title">Assistant comptabilité PME</div>
+      <div class="card-problem">Les petites PME saisissent leurs données à la main avec des erreurs. Ce workflow automatise les calculs courants et génère des rapports clairs.</div>
+      <div class="card-result">Calculs automatisés — zéro erreur de saisie manuelle</div>
+      <div class="stack">
+        <span class="tag">Make.com</span><span class="tag">Google Sheets</span><span class="tag">PDF</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- STACK -->
+<div class="stack-section">
+  <div class="stack-inner">
+    <div class="section-label">Stack technique maîtrisée</div>
+    <div class="stack-grid">
+      <div class="stack-item"><span>⚙️</span> n8n</div>
+      <div class="stack-item"><span>🔗</span> Make.com</div>
+      <div class="stack-item"><span>🤖</span> Groq AI</div>
+      <div class="stack-item"><span>💎</span> Gemini</div>
+      <div class="stack-item"><span>💬</span> WhatsApp Business API</div>
+      <div class="stack-item"><span>📱</span> Telegram</div>
+      <div class="stack-item"><span>📄</span> PDFMonkey</div>
+      <div class="stack-item"><span>📊</span> Google Sheets</div>
+      <div class="stack-item"><span>📝</span> Notion</div>
+      <div class="stack-item"><span>📦</span> Dropbox</div>
+      <div class="stack-item"><span>🗄️</span> PostgreSQL</div>
+      <div class="stack-item"><span>📋</span> Tally</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-inner">
+    <div>
+      <div class="cta-label">Prêt à livrer</div>
+      <div class="cta-title">Besoin d'un livreur<br>technique fiable ?</div>
+      <p class="cta-sub">Vous gérez la relation client.<br>Je livre le workflow, documenté et testé.</p>
+    </div>
+    <div class="cta-buttons">
+      <a href="https://wa.me/22952502827" target="_blank" class="btn-primary">
+        💬 WhatsApp direct
+      </a>
+      <a href="https://digitcenlio-netizen.github.io" target="_blank" class="btn-secondary">
+        🌐 Site complet
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Fred Automatise · Remote worldwide</p>
+  <p>n8n · Make.com · IA · Automatisation</p>
+</footer>
+
+</body>
+</html>
